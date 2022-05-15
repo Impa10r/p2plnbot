@@ -12,11 +12,16 @@ const validateUser = async (ctx, start) => {
     const tgUser = ctx.update.message.from;
     let user = await User.findOne({ tg_id: tgUser.id });
 
+    let languageCode = ctx.i18n.locale();
+    
+    if (!!process.env.FORCE_USER_LANGUAGE)
+      languageCode = process.env.FORCE_USER_LANGUAGE;
+
     if (!user && start) {
       user = new User({
         tg_id: tgUser.id,
         username: tgUser.username,
-        lang: ctx.i18n.locale(),
+        lang: languageCode,
       });
       await user.save();
     } else if (!user) {

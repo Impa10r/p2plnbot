@@ -1,3 +1,4 @@
+const { I18n } = require('@grammyjs/i18n');
 const { ObjectId } = require('mongoose').Types;
 const { Order } = require('../models');
 const messages = require('./messages');
@@ -95,7 +96,7 @@ const getFiatAmountData = (fiatAmount) => {
   return response
 };
 
-const buildDescription = (i18n, {
+const buildDescription = (i18n_user, {
   user,
   type,
   amount,
@@ -107,6 +108,17 @@ const buildDescription = (i18n, {
   currency,
 }) => {
   try {
+    let languageCode = i18n_user.languageCode;
+    
+    if (!!process.env.FORCE_CHANNEL_LANGUAGE)
+      languageCode = process.env.FORCE_CHANNEL_LANGUAGE;
+        
+    const i18n_temp = new I18n({
+      defaultLanguageOnMissing: true,
+      directory: 'locales',
+    });
+    const i18n = i18n_temp.createContext(languageCode);
+
     const action = type == 'sell' ? i18n.t('selling') : i18n.t('buying');
     const hashtag = `#${type.toUpperCase()}${fiatCode}\n`;
     const paymentAction = type == 'sell' ? i18n.t('receive_payment') : i18n.t('pay');
@@ -128,7 +140,7 @@ const buildDescription = (i18n, {
     let currencyString = `${fiatCode} ${fiatAmountString}`;
   
     if (!!currency) {
-      currencyString = `${fiatAmountString} ${currency.name_plural} ${currency.emoji}`;
+      currencyString = `${fiatAmountString} ${currency.code} ${currency.emoji}`;
     }
     
     let amountText = `${amount} `;

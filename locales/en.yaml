@@ -45,14 +45,14 @@ cancel_order_cmd: |
 pending_buy: |
   📝 You offer to buy sats is active in the ${channel} channel.
 
-  You need to wait until another user picks up the order, Espera que alguien tome tu compra, this order will expire in ${orderExpirationWindow} hours.
+  You need to wait until another user picks up the order, this order will expire in ${orderExpirationWindow} hours.
 
   You can cancel this order before another user picks it up by executting the command 👇
 must_be_int: ${fieldName} must be a number
 sats_amount: sats amount
 fiat_amount: fiat amount
 sell_correct_format: |
-  /sell \<_sats amount_\> \<_fiat amount_\> \<_fiat code_\> \<_payment method_\> \[_prime/discount_\]
+  /sell \<_sats amount_\> \<_fiat amount_\> \<_fiat code_\> \<_payment method_\> \[_premium/discount_\]
 
   In order to create a sell order of 1000 satoshis for 2 Us dollars \(USD\) and indicate that the fiat payment is through transfer or ATM deposit, you must avoid \<\> and \[\]\.
 
@@ -66,7 +66,7 @@ sell_correct_format: |
 
   `/sell 0 100\-500 USD "payment method" 3`
 buy_correct_format: |
-  /buy \<_sats amount_\> \<_fiat amount_\> \<_fiat code_\> \<_payment method_\> \[_prime/discount_\]
+  /buy \<_sats amount_\> \<_fiat amount_\> \<_fiat code_\> \<_payment method_\> \[_premium/discount_\]
 
   In order to create and order for 1000 satoshis for 2 \(USD\) and indicate that fiat payment is through transfer, you must to omit both \<\> and \[\]\.
 
@@ -187,8 +187,8 @@ must_be_number_or_range: "Fiat_ampunt must be a number or numeric range in the  
 invalid_lightning_address: Invalid lightning adress
 unavailable_lightning_address: Unavailable lightning adress ${la}
 help: |
-  /sell <_sats amount_> <_fiat amount_> <_fiat code_> <_payment method_> [prime/discount] - Creates a Sell order
-  /buy <_sats amount_> <_fiat amount_> <_Fiat code_> <_payment method_> [prime/discount] - Creates a Purchase Order
+  /sell <_sats amount_> <_fiat amount_> <_fiat code_> <_payment method_> \[_premium/discount_] - Creates a Sell order
+  /buy <_sats amount_> <_fiat amount_> <_Fiat code_> <_payment method_> \[_premium/discount_] - Creates a Purchase Order
   /info - Shows additional info about the BOT
   /showusername - Toggles off the display of the username in each new order created. Default value is se to no (false)
   /showvolume - shows trade volume when each order is created, default value is *no* (false)

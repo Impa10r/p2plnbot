@@ -1,3 +1,4 @@
+const { I18n } = require('@grammyjs/i18n');
 const { TelegramError } = require('telegraf');
 const { getCurrency, sanitizeMD, secondsToTime } = require('../util');
 
@@ -386,10 +387,21 @@ const notOrderMessage = async (ctx) => {
   }
 };
 
-const publishBuyOrderMessage = async (bot, order, i18n) => {
+const publishBuyOrderMessage = async (bot, order, i18n_user) => {
   try {
     let publishMessage = `⚡️🍊⚡️\n${order.description}\n`;
     publishMessage += `:${order._id}:`;
+
+    let languageCode = i18n_user.languageCode;
+    
+    if (!!process.env.FORCE_CHANNEL_LANGUAGE)
+      languageCode = process.env.FORCE_CHANNEL_LANGUAGE;
+        
+    const i18n_temp = new I18n({
+      defaultLanguageOnMissing: true,
+      directory: 'locales',
+    });
+    const i18n = i18n_temp.createContext(languageCode);
 
     // Mensaje al canal
     const message1 = await bot.telegram.sendMessage(process.env.CHANNEL, publishMessage, {
@@ -408,10 +420,21 @@ const publishBuyOrderMessage = async (bot, order, i18n) => {
   }
 };
 
-const publishSellOrderMessage = async (bot, order, i18n) => {
+const publishSellOrderMessage = async (bot, order, i18n_user) => {
   try {
     let publishMessage = `⚡️🍊⚡️\n${order.description}\n`;
     publishMessage += `:${order._id}:`;
+    
+    let languageCode = i18n_user.languageCode;
+    
+    if (!!process.env.FORCE_CHANNEL_LANGUAGE)
+      languageCode = process.env.FORCE_CHANNEL_LANGUAGE;
+        
+    const i18n_temp = new I18n({
+      defaultLanguageOnMissing: true,
+      directory: 'locales',
+    });
+    const i18n = i18n_temp.createContext(languageCode);
 
     const message1 = await bot.telegram.sendMessage(process.env.CHANNEL, publishMessage, {
       reply_markup: {
